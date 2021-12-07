@@ -3,9 +3,14 @@ const {
     ObjectId
 } = require('mongodb');
 
+require('dotenv').config()
+
+// Express
 const express = require('express')
 const app = express()
+const port = process.env.PORT
 
+// Middleware
 const bodyParser = require('body-parser')
 
 const cors = require('cors');
@@ -13,12 +18,12 @@ const {
     query
 } = require('express');
 
-require('dotenv').config()
+// Mongo config
 
-const port = process.env.PORT
 const client = new MongoClient(process.env.COMPLETEURL);
 const dbName = "courseproject";
 
+//Middleware
 app.use(express.static('public'))
 app.use(bodyParser.json())
 app.use(cors())
@@ -31,9 +36,9 @@ app.get('/games', async (req, res) => {
     try {
         await client.connect()
         const colli = client.db(dbName).collection('games')
-        const clngs = await colli.find({}).toArray()
+        const gms = await colli.find({}).toArray()
 
-        res.status(200).json(clngs)
+        res.status(200).json(gms)
     } catch (error) {
         console.log(error)
         res.status(500).send({
