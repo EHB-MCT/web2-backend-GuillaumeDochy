@@ -59,7 +59,7 @@ app.post('/games', async (req, res) => {
 
         await client.connect();
 
-        let challengeDoc = {
+        let game = {
             name: req.body.name,
             background_image: req.body.bg,
             release: req.body.release,
@@ -69,7 +69,7 @@ app.post('/games', async (req, res) => {
 
         res.status(200).send('succesfully uploaded')
 
-        const p = await col.insertOne(challengeDoc);
+        const p = await col.insertOne(game);
 
         const myDoc = await col.findOne();
 
