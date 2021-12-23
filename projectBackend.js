@@ -50,6 +50,61 @@ app.get('/games', async (req, res) => {
     }
 })
 
+app.post('/games', async (req, res) => {
+    try {
+
+        const db = client.db(dbName);
+        const col = db.collection("games");
+        console.log("Connected correctly to server");
+
+        await client.connect();
+
+        let challengeDoc = {
+            name: req.body.name,
+            background_image: req.body.bg,
+            release: req.body.release,
+            slug: req.body.slug,
+            description: req.body.description,
+        }
+
+        res.status(200).send('succesfully uploaded')
+
+        const p = await col.insertOne(challengeDoc);
+
+        const myDoc = await col.findOne();
+
+        console.log(myDoc);
+    } catch (err) {
+        console.log(err.stack);
+    } finally {
+        await client.close();
+    }
+})
+
+app.delete('/deletegames/:id', async (req, res) => {
+    try {
+        await client.connect();
+
+        const db = client.db(dbName);
+        const col = db.collection("games");
+
+        const query = {
+            _id: ObjectId(req.params.id)
+        }
+
+        const gameDelete = await col.deleteOne(query)
+        console.log(gameDelete);
+        res.status(200).send(gameDelete)
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            error: 'error',
+            value: error
+        });
+    }
+
+})
+
 app.listen(port, () => {
     console.log(`REST API is running at http://localhost:${port}`);
 })
