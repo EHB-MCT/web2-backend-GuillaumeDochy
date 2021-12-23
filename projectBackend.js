@@ -61,7 +61,7 @@ app.post('/games', async (req, res) => {
 
         let game = {
             name: req.body.name,
-            background_image: req.body.bg,
+            background_image: req.body.background_image,
             release: req.body.release,
             slug: req.body.slug,
             description: req.body.description,
@@ -87,10 +87,6 @@ app.delete('/deletegames', async (req, res) => {
 
         const db = client.db(dbName);
         const col = db.collection("games");
-
-        const query = {
-            _id: ObjectId(req.params.id)
-        }
 
         const gameDelete = await col.deleteMany()
         console.log(gameDelete);
