@@ -81,7 +81,7 @@ app.post('/games', async (req, res) => {
     }
 })
 
-app.delete('/deletegames/:id', async (req, res) => {
+app.delete('/deletegames', async (req, res) => {
     try {
         await client.connect();
 
@@ -92,7 +92,7 @@ app.delete('/deletegames/:id', async (req, res) => {
             _id: ObjectId(req.params.id)
         }
 
-        const gameDelete = await col.deleteOne(query)
+        const gameDelete = await col.deleteMany()
         console.log(gameDelete);
         res.status(200).send(gameDelete)
     } catch (error) {
